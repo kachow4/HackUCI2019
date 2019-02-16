@@ -5,7 +5,7 @@ Created on Feb 15, 2019
 '''
 #yay first push
 from pprint import pprint
-import requests
+# import requests
 # city = input('Enter your travel destination: ')
 # print(city)
 # s = 'http://api.openweathermap.org/data/2.5/weather?q={c}&APPID=386aa376a85049b9a45c5fb223f1a691'.format(c=city)

@@ -19,7 +19,7 @@ def home():
 def form_post():
 
     cityid = None
-    city = request.form['city']
+    city = request.form['city'].capitalize()
     triplen = int(request.form['date'])
     with open('city.list.json/city.list.json', encoding="utf-8") as f:
         try:

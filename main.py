@@ -48,8 +48,14 @@ def form_post():
     r = requests.get(s)
     cityfile = r.json()
     pprint(cityfile)
+    temp = ((cityfile['main']['temp'])-273.15)*(9/5)+32
+    
+
     templatevars = {
-        'cityinfo' : str(cityfile['list'][0]['weather']),
+        'city' : city,
+        'cityinfo' : str(cityfile['weather'][0]['description']),
+        'humidity': str(cityfile['main']['humidity']),
+        'temp' : temp,
         } 
     return render_template('submit.html', templatevars=templatevars)
  

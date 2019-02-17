@@ -23,9 +23,7 @@
     <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
     <a href="#showcase" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Essentials</a> 
     <a href="#services" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Toiletries</a> 
-    <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Clear</a> 
-    <a href="#packages" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Rain</a> 
-    <a href="#contact" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Snow</a>
+    <a href="#designers" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">{{templatevars['genweather']}}</a> 
   </div>
 </nav>
 
@@ -64,6 +62,7 @@
 		<input type="checkbox">&nbsp;&nbsp;Boarding pass<br>
 		<input type="checkbox">&nbsp;&nbsp;Printed trip itinerary<br>
 		<input type="checkbox">&nbsp;&nbsp;Hand sanitizer<br>
+		<input type="checkbox">&nbsp;&nbsp;Backpack or Handbag<br>	
   </div>
   
   <div id="modal01" class="w3-modal w3-black" style="padding-top:0" onclick="this.style.display='none'">
@@ -100,13 +99,15 @@
     <hr style="width:50px;border:5px solid green" class="w3-round">
     {% for item in templatevars['quantityclothes'] %}
     	<ul>
-    		<li>{{item}}</li>
+    		<input type="checkbox">&nbsp;&nbsp;{{item}}
     	</ul>
     {% endfor %}
+    <h1 class="w3-xlarge w3-text-light-green">
     We suggest packing for these for the weather:
+    </h1>
     {% for item in templatevars['packbyweather'] %}
     	<ul>
-    		<li>{{item}}</li>
+    		<input type="checkbox">&nbsp;&nbsp;{{item}}
     	</ul>
     {% endfor %}
   </div>

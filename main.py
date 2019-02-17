@@ -126,7 +126,7 @@ Q-tips"""
             quantityclothes.append(str(triplen+1)+' '+item)
         elif 'shirts' in item:             
             if triplen > 10:
-                quantityclothes.append(str(triplen/2+2)+' '+item)
+                quantityclothes.append(str(math.ceil(triplen/2)+2)+' '+item)
             elif triplen >= 5:
                 quantityclothes.append(str(triplen-2)+' '+item)
             else:

@@ -47,7 +47,7 @@ def form_post():
     r = requests.get(s)
     cityfile = r.json()
 #     pprint(cityfile)
-    temp = ((cityfile['main']['temp'])-273.15)
+    temp = float(str((cityfile['main']['temp'])-273.15)[:4])
     cloudcover = (cityfile['clouds']['all'])
     description = cityfile['weather'][0]['description']
     ''''''
@@ -70,7 +70,24 @@ Cell phone charger
 Boarding pass
 Printed trip itinerary
 Hand sanitizer'''
+    
+    toiletries = """\
+Contact solution
+Perfume
+Nail clippers
+Tweezers
+Makeup
+Toothbrush
+Toothpaste
+Hairbrush
+Floss
+Deodorant
+Shaver
+Shaving cream/gel
+Contacts
+qtips"""
     essentials = essentials.split('\n')
+    toiletries = toiletries.split('\n')
     clotheslist = [] 
     if 'rain' in description:
         clotheslist.extend([item for item in ['umbrella', 'raincoat', 'rain boots']])
@@ -110,6 +127,7 @@ Hand sanitizer'''
         'temp' : temp,
         'cloudcover':cloudcover,
         'essentials' : essentials,
+        'toiletries' : toiletries,
         'clotheslist' : clotheslist,
         } 
     return render_template('submit.html', templatevars=templatevars)

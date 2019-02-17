@@ -135,7 +135,7 @@ Q-tips"""
             quantityclothes.append(str(math.ceil(triplen/2))+' '+item)
         else:
             quantityclothes.append('1 '+item)
-    print(quantityclothes)
+#     print(quantityclothes)
         
     
     

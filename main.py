@@ -45,10 +45,11 @@ def form_post():
     s = 'http://api.openweathermap.org/data/2.5/weather?q={c}&APPID=386aa376a85049b9a45c5fb223f1a691'.format(c=city)
     r = requests.get(s)
     cityfile = r.json()
-#     pprint(cityfile)
+    pprint(cityfile)
     temp = float(str((cityfile['main']['temp'])-273.15)[:4])
     cloudcover = (cityfile['clouds']['all'])
     description = cityfile['weather'][0]['description']
+    genweather = cityfile['weather'][0]['main']
     ''''''
     essentials = '''\
 Chapstick
@@ -58,7 +59,7 @@ Pain reliever pills
 Wallet
 Casual watch
 House key
-Reading glasses
+Glasses
 Sunglasses
 Ear plugs
 Eye mask
@@ -85,37 +86,37 @@ Deodorant
 Shaver
 Shaving cream/gel
 Contacts
-qtips"""
+Q-tips"""
     essentials = essentials.split('\n')
     toiletries = toiletries.split('\n')
     packbyweather = [] 
     if 'rain' in description:
-        packbyweather.extend([item for item in ['umbrella', 'raincoat', 'rain boots']])
+        packbyweather.extend([item for item in ['Umbrella', 'Raincoat', 'Rain boots']])
     if 'clouds' in description:
-        packbyweather.extend([item for item in ['hoodie', 'jacket', 'coat']])
+        packbyweather.extend([item for item in ['Hoodie', 'Jacket', 'Coat']])
     if 'sun' in description:
-        packbyweather.extend([item for item in ['sun screen', 'hat', 'light jacket']])
+        packbyweather.extend([item for item in ['Sun screen', 'Hat', 'Light Jacket']])
     if 'wind' in description:
-        packbyweather.extend([item for item in ['wind breaker', 'Vaseline', 'scarf', 'allergy medication']])
+        packbyweather.extend([item for item in ['Wind Breaker', 'Vaseline', 'Scarf', 'Allergy Medication']])
     if 'snow' in description:
-        packbyweather.extend([item for item in ['down jacket', 'beanie', 'mittens', 'warm boots', 'snow boots', 'scarf', 'snow pants', 'hand-warmers', 'long underwear']])
+        packbyweather.extend([item for item in ['Thick Jacket', 'Beanie', 'Mittens', 'Warm boots', 'Snow boots', 'Scarf', 'Snow pants', 'Hand-warmers', 'Long underwear']])
     if 'clear' in description:
         if temp < 18:
-            packbyweather.extend([item for item in ['jacket']])
+            packbyweather.extend([item for item in ['Jacket']])
         else:
-            packbyweather.append('light jacket')
+            packbyweather.append('Light Jacket')
     if 'breeze' in description:
-        packbyweather.extend([item for item in ['wind breaker', 'scarf', 'hat']])
+        packbyweather.extend([item for item in ['Wind Breaker', 'Scarf', 'Hat']])
     
     if temp > 0:
         if temp < 4:
-            packbyweather.extend([item for item in ['beanie', 'down jacket', 'mittens', 'warm boots', 'scarf', 'hand-warmers'] if item not in packbyweather])
+            packbyweather.extend([item for item in ['Beanie', 'Thick Jacket', 'Mittens', 'Warm boots', 'Scarf', 'Hand-warmers'] if item not in packbyweather])
         elif temp < 18:
-            packbyweather.extend([item for item in ['hoodie', 'jacket', 'hat'] if item not in packbyweather])
+            packbyweather.extend([item for item in ['Hoodie', 'Jacket', 'Hat'] if item not in packbyweather])
         elif temp < 30:
-            packbyweather.extend([item for item in ['hat', 'sunglasses', 'light jacket'] if item not in packbyweather])
+            packbyweather.extend([item for item in ['Hat', 'Sunglasses', 'Light Jacket'] if item not in packbyweather])
         else:
-            packbyweather.extend([item for item in ['hat', 'sunglasses', 'personal fan', 'aloe vera'] if item not in packbyweather])
+            packbyweather.extend([item for item in ['Hat', 'Sunglasses', 'Personal fan', 'Aloe Vera'] if item not in packbyweather])
     
     ##############################
     regclothes = ['sets of underwear', 'pairs of socks', 'casual shirts', 'pairs of pants', 'belt', 'set of pajamas']
@@ -131,7 +132,7 @@ qtips"""
             else:
                 quantityclothes.append(str(triplen)+' '+item)
         elif 'pants' in item:
-            quantityclothes.append(str(math.floor(triplen/2))+' '+item)
+            quantityclothes.append(str(math.ceil(triplen/2))+' '+item)
         else:
             quantityclothes.append('1 '+item)
     print(quantityclothes)
@@ -149,6 +150,7 @@ qtips"""
         'toiletries' : toiletries,
         'packbyweather' : packbyweather,
         'quantityclothes' : quantityclothes,
+        'genweather' : genweather,
         } 
     return render_template('submit.html', templatevars=templatevars)
  

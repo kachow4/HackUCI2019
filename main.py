@@ -6,10 +6,8 @@ Created on Feb 15, 2019
 #yay first push
 from pprint import pprint
 import requests
-
-
 import json
-
+import math
 from flask import Flask, render_template, request
 app = Flask(__name__)
  
@@ -22,6 +20,7 @@ def form_post():
 
     cityid = None
     city = request.form['city']
+    triplen = int(request.form['date'])
     with open('city.list.json/city.list.json', encoding="utf-8") as f:
         try:
             data = json.load(f)
@@ -69,7 +68,8 @@ Cell phone
 Cell phone charger
 Boarding pass
 Printed trip itinerary
-Hand sanitizer'''
+Hand sanitizer
+Appropriate currency'''
     
     toiletries = """\
 Contact solution
@@ -88,35 +88,54 @@ Contacts
 qtips"""
     essentials = essentials.split('\n')
     toiletries = toiletries.split('\n')
-    clotheslist = [] 
+    packbyweather = [] 
     if 'rain' in description:
-        clotheslist.extend([item for item in ['umbrella', 'raincoat', 'rain boots']])
+        packbyweather.extend([item for item in ['umbrella', 'raincoat', 'rain boots']])
     if 'clouds' in description:
-        clotheslist.extend([item for item in ['hoodie', 'jacket', 'coat']])
+        packbyweather.extend([item for item in ['hoodie', 'jacket', 'coat']])
     if 'sun' in description:
-        clotheslist.extend([item for item in ['sun screen', 'hat', 'light jacket']])
+        packbyweather.extend([item for item in ['sun screen', 'hat', 'light jacket']])
     if 'wind' in description:
-        clotheslist.extend([item for item in ['wind breaker', 'Vaseline', 'scarf', 'allergy medication']])
+        packbyweather.extend([item for item in ['wind breaker', 'Vaseline', 'scarf', 'allergy medication']])
     if 'snow' in description:
-        clotheslist.extend([item for item in ['down jacket', 'beanie', 'mittens', 'warm boots', 'snow boots', 'scarf', 'snow pants', 'hand-warmers']])
+        packbyweather.extend([item for item in ['down jacket', 'beanie', 'mittens', 'warm boots', 'snow boots', 'scarf', 'snow pants', 'hand-warmers', 'long underwear']])
     if 'clear' in description:
         if temp < 18:
-            clotheslist.extend([item for item in ['jacket']])
+            packbyweather.extend([item for item in ['jacket']])
         else:
-            clotheslist.append('light jacket')
+            packbyweather.append('light jacket')
     if 'breeze' in description:
-        clotheslist.extend([item for item in ['wind breaker', 'scarf', 'hat']])
+        packbyweather.extend([item for item in ['wind breaker', 'scarf', 'hat']])
     
     if temp > 0:
         if temp < 4:
-            clotheslist.extend([item for item in ['beanie', 'down jacket', 'mittens', 'warm boots', 'scarf', 'hand-warmers'] if item not in clotheslist])
+            packbyweather.extend([item for item in ['beanie', 'down jacket', 'mittens', 'warm boots', 'scarf', 'hand-warmers'] if item not in packbyweather])
         elif temp < 18:
-            clotheslist.extend([item for item in ['hoodie', 'jacket', 'hat'] if item not in clotheslist])
+            packbyweather.extend([item for item in ['hoodie', 'jacket', 'hat'] if item not in packbyweather])
         elif temp < 30:
-            clotheslist.extend([item for item in ['hat', 'sunglasses', 'light jacket'] if item not in clotheslist])
+            packbyweather.extend([item for item in ['hat', 'sunglasses', 'light jacket'] if item not in packbyweather])
         else:
-            clotheslist.extend([item for item in ['hat', 'sunglasses', 'personal fan', 'aloe vera'] if item not in clotheslist])
+            packbyweather.extend([item for item in ['hat', 'sunglasses', 'personal fan', 'aloe vera'] if item not in packbyweather])
     
+    ##############################
+    regclothes = ['sets of underwear', 'pairs of socks', 'casual shirts', 'pairs of pants', 'belt', 'set of pajamas']
+    quantityclothes = []
+    for item in regclothes:
+        if 'underwear' in item or 'socks' in item:
+            quantityclothes.append(str(triplen+1)+' '+item)
+        elif 'shirts' in item:             
+            if triplen > 10:
+                quantityclothes.append(str(triplen/2+2)+' '+item)
+            elif triplen >= 5:
+                quantityclothes.append(str(triplen-2)+' '+item)
+            else:
+                quantityclothes.append(str(triplen)+' '+item)
+        elif 'pants' in item:
+            quantityclothes.append(str(math.floor(triplen/2))+' '+item)
+        else:
+            quantityclothes.append('1 '+item)
+    print(quantityclothes)
+        
     
     
     ''''''
@@ -128,7 +147,8 @@ qtips"""
         'cloudcover':cloudcover,
         'essentials' : essentials,
         'toiletries' : toiletries,
-        'clotheslist' : clotheslist,
+        'packbyweather' : packbyweather,
+        'quantityclothes' : quantityclothes,
         } 
     return render_template('submit.html', templatevars=templatevars)
  
